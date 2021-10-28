@@ -22,6 +22,7 @@ class Biblioteca
        {
             Libro libro;
             cin>>libro;
+
             libri.push_back(libro);
        }
 
@@ -49,7 +50,10 @@ class Biblioteca
        {
             Cliente cliente;
             cin>>cliente;
-            clienti.push_back(cliente);
+            if(getCliente(cliente.codice_fiscale) == clienti.end())
+                 clienti.push_back(cliente);
+            else
+                cout<<"Il cliente con codice fiscale: "<<cliente.codice_fiscale<<" esiste gia'."<<endl;
        }
 
        void rimuovereCliente()
