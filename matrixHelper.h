@@ -11,7 +11,7 @@ int** prodMatrix(int** matrix1,int** matrix2,const int row,const int col);
 
 
 
-
+//riempi matrice
 int** fillMatrix(const int row,const int col)
 {
 	
