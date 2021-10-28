@@ -4,42 +4,40 @@
 #include <iostream>
 #include <string>
 #include "Libro.h"
+#include "Codificato.h"
 
 using namespace std;
 
 
 
-class Cliente
+class Cliente : public Codificato
 {
     friend class Biblioteca;
     private:
       string nome,codice_fiscale;
-      unsigned int codice;
       Libro* libro;
-
     public:
-      static unsigned int contatore;
+      static unsigned int CONTATORE;
 
       Cliente()
       {
+          codice = CONTATORE++;
           nome = "";
           codice_fiscale = "";
-          codice = contatore++;
           libro = nullptr;
       }
 
       Cliente(string nome,string codice_fiscale)
       {
+          codice = CONTATORE++;
           this -> nome = nome;
           this -> codice_fiscale = codice_fiscale;
-          codice = contatore++;
           libro = nullptr;
       }
 
       //getters
       string getNome() const {return nome;}
       string getCodiceFiscale() const {return codice_fiscale;}
-      unsigned int getCodice() const {return codice;}
 
       bool haLibro() const
       {
@@ -48,7 +46,8 @@ class Cliente
 
       friend istream& operator>>(istream& in,Cliente& c)
       {
-          cout<<"Inserire Nome: ";in>>c.nome;
+          in.ignore();
+          cout<<"Inserire Nome: "; getline(in,c.nome);
           cout<<"Inserire Codice Fiscale: ";in>>c.codice_fiscale;
           return in;
       }

@@ -5,28 +5,27 @@
 #include <string>
 #include <iostream>
 #include <vector>
+#include "Codificato.h"
 using namespace std;
 
 
 
-class Libro
+class Libro : public Codificato
 {
     friend class Biblioteca;
 
     private:
     string nome;
     string casaEditrice;
-    unsigned int codice;
     vector<string> autori;
     bool inPrestito;
 
     public:
-    static unsigned int contatore;
-
+        static unsigned int CONTATORE;
 
     Libro()
     {
-        codice = Libro::contatore++;
+        codice = CONTATORE++;
         nome = "";
         casaEditrice = "";
         inPrestito = false;
@@ -34,16 +33,15 @@ class Libro
     
     Libro(string nome,string casaEditrice)
     {
+      codice = CONTATORE++;
       this -> nome = nome;
       this -> casaEditrice = casaEditrice;
-      codice = Libro::contatore++;
       inPrestito = false;
     }
-
+    
     //getters
     string getNome() const {return nome;}
     string getCasaEditrice() const {return casaEditrice;}
-    unsigned int getCodice() const {return codice;}
     bool isInPrestito() const {return inPrestito;}
 
     //setters
@@ -59,11 +57,12 @@ class Libro
 
     friend istream& operator>>(istream& in,Libro& libro)
     {
-        cout<<"Inserire Titolo: ";in>>libro.nome;
-        cout<<"Inserire Casa Editrice: ";in>>libro.casaEditrice;
+        in.ignore();
+        cout<<"Inserire Titolo: ";getline(in,libro.nome);
+        cout<<"Inserire Casa Editrice: ";getline(in,libro.casaEditrice);
 
         string val;
-        while(in>>val && val != "-1")
+        while(getline(in,val) && val != "-1")
             libro.aggiungiAutore(val);
         return in;
     }

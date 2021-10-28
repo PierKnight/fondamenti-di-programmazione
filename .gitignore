@@ -1,4 +1,5 @@
 
-# ignora i file .exe
+# ignora i file:
 *.exe
+*.pdf
 
