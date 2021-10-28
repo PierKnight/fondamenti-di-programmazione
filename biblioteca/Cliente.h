@@ -25,7 +25,7 @@ class Cliente : public Codificato
           libro = nullptr;
       }
 
-      Cliente(string nome,string codice_fiscale)
+      Cliente(const string& nome,const string& codice_fiscale)
       {
           codice = CONTATORE++;
           this -> nome = nome;
@@ -34,8 +34,8 @@ class Cliente : public Codificato
       }
 
       //getters
-      string getNome() const {return nome;}
-      string getCodiceFiscale() const {return codice_fiscale;}
+      const string& getNome() const {return nome;}
+      const string& getCodiceFiscale() const {return codice_fiscale;}
 
       bool haLibro() const
       {

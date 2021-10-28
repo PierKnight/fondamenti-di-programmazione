@@ -120,29 +120,26 @@ public:
             cout << "Codice del Cliente invalido!" << endl;
     }
 
-    vector<Libro>::iterator getLibro(const unsigned int codice)
+    const vector<Libro>::iterator getLibro(const unsigned int codice)
     {
         vector<Libro>::iterator pos;
-        for (pos = libri.begin(); pos < libri.end() && pos->codice != codice; pos++)
-            ;
+        for (pos = libri.begin(); pos < libri.end() && pos->codice != codice; pos++);
         return pos;
     }
-    vector<Libro>::iterator getLibro(const string titolo)
+    const vector<Libro>::iterator getLibro(const string& titolo)
     {
         vector<Libro>::iterator pos;
-        for (pos = libri.begin(); pos < libri.end() && pos->nome != titolo; pos++)
-            ;
+        for (pos = libri.begin(); pos < libri.end() && pos->nome != titolo; pos++);
         return pos;
     }
 
-    vector<Cliente>::iterator getCliente(const unsigned int codice)
+    const vector<Cliente>::iterator getCliente(const unsigned int codice)
     {
         vector<Cliente>::iterator pos;
-        for (pos = clienti.begin(); pos < clienti.end() && pos->codice != codice; pos++)
-            ;
+        for (pos = clienti.begin(); pos < clienti.end() && pos->codice != codice; pos++);
         return pos;
     }
-    vector<Cliente>::iterator getCliente(const string codiceFiscale)
+    const vector<Cliente>::iterator getCliente(const string& codiceFiscale)
     {
         vector<Cliente>::iterator pos;
         for (pos = clienti.begin(); pos < clienti.end() && pos->codice_fiscale != codiceFiscale; pos++)
@@ -152,7 +149,7 @@ public:
 
     //tenta di prestare un libro a cliente
     //se cliente ha già un libro oppure il libro è in prestito ritorna false.
-    bool presta(Cliente &cliente, Libro &libro)
+    bool presta(Cliente& cliente, Libro& libro)
     {
         if (!libro.isInPrestito() && !cliente.haLibro())
         {
@@ -163,7 +160,7 @@ public:
         return false;
     }
 
-    bool presta(string codice_fiscale, Libro &libro)
+    bool presta(const string& codice_fiscale, Libro& libro)
     {
         vector<Cliente>::iterator c = getCliente(codice_fiscale);
         if (c != clienti.end())
@@ -171,7 +168,7 @@ public:
         return false;
     }
 
-    bool riconsegna(Cliente &cliente)
+    bool riconsegna(Cliente& cliente)
     {
         if (cliente.haLibro())
         {

@@ -30,7 +30,7 @@ class Libro : public Codificato
         inPrestito = false;
     }
     
-    Libro(string nome,string casaEditrice)
+    Libro(const string& nome,const string& casaEditrice)
     {
       codice = CONTATORE++;
       this -> nome = nome;
@@ -39,8 +39,8 @@ class Libro : public Codificato
     }
     
     //getters
-    string getNome() const {return nome;}
-    string getCasaEditrice() const {return casaEditrice;}
+    const string& getNome() const {return nome;}
+    const string& getCasaEditrice() const {return casaEditrice;}
     bool isInPrestito() const {return inPrestito;}
 
     //setters
