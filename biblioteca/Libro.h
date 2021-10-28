@@ -1,3 +1,5 @@
+using namespace std;
+
 #ifndef LIBRO_H
 #define LIBRO_H
 
@@ -6,9 +8,6 @@
 #include <iostream>
 #include <vector>
 #include "Codificato.h"
-using namespace std;
-
-
 
 class Libro : public Codificato
 {

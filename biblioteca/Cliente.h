@@ -1,14 +1,12 @@
+
+using namespace std;
+
 #ifndef CLIENTE_H
 #define CLIENTE_H
-
 #include <iostream>
 #include <string>
 #include "Libro.h"
 #include "Codificato.h"
-
-using namespace std;
-
-
 
 class Cliente : public Codificato
 {
