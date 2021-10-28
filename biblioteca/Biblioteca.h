@@ -178,6 +178,7 @@ class Biblioteca
 
        void infoClienti()
        {
+           bool empty = true;
            for(int i = 0;i < clienti.size();i++)
            {
                if(clienti[i].haLibro())
@@ -185,20 +186,27 @@ class Biblioteca
                    cout<<"-Cliente "<<clienti[i].getCodice()<<" ha un libro in prestito: "
                    <<clienti[i].libro -> getNome()
                    <<endl;
+                   empty = false;
                }
            }
+           if(empty)
+              cout<<"Nessun Cliente ha un libro in prestito."<<endl;
        }
 
        void infoLibri()
        {
+           bool empty = true;
            for(int i = 0;i < clienti.size();i++)
            {
                if(clienti[i].haLibro())
                {
                    Libro& libro = *clienti[i].libro;
                    cout<<"-Libro \""<<libro.nome<<"\" preso in prestito da "<<clienti[i].getNome()<<" Codice fiscale: "<<clienti[i].getCodiceFiscale()<<endl;
+                   empty = false;
                }
            }
+           if(empty)
+              cout<<"Nessun Libro e' in prestito"<<endl;
        }
 
 
