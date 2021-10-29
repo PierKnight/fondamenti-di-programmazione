@@ -84,11 +84,10 @@ bool stessiVoti(const Studente& s1,const Studente& s2)
 	
 	unsigned count = s1.getEsamiSostenuti();
 
-	
-	int voti[31];
+	int voti[30];
 
     //inizializzo a 0 
-    for(int i = 0;i < 31;i++)
+    for(int i = 0;i < 30;i++)
 	    voti[i] = 0;
 
 	for(int i = 0;i < count;i++)
@@ -96,9 +95,8 @@ bool stessiVoti(const Studente& s1,const Studente& s2)
 		voti[s1.getVoto(i)]++;
 		voti[s2.getVoto(i)]--;
 	}
-	
-	
-	for(int i = 0;i < 31;i++)
+		
+	for(int i = 0;i < 30;i++)
 	{
 		if(voti[i] != 0)
 		    return false;
