@@ -14,23 +14,31 @@ int main()
     
 	cout<<"Inserire numero studenti: ";
 	
-	int numeroStudenti;
-	cin>>numeroStudenti;
+	int numeroStudenti = 2;
+	//cin>>numeroStudenti;
 	
 	
-	Studente* studenti = new Studente[numeroStudenti];
+	//Studente* studenti = new Studente[numeroStudenti];
+	
+
 	
 	
-	
-	for(int i = 0;i < numeroStudenti;i++)
-		cin>>studenti[i];
-	
+	//for(int i = 0;i < numeroStudenti;i++)
+		//cin>>studenti[i];
+	Studente studentea("reterter",20);
+	studentea.aggiungiEsame("inglese",21,12);
+	studentea.aggiungiEsame("matematica",25,6);
+	Studente studenteb("rgteg",21);
+	studenteb.aggiungiEsame("discreta",25,12);
+	studenteb.aggiungiEsame("italiano",21,12);
+
+	Studente studenti[numeroStudenti]{studentea,studenteb};
 	
 	cout<<"Best Students: "<<bestStudents(studenti,numeroStudenti)<<endl;
     cout<<"Esami mancanti allo studente con più esami svolti: "<<numeroEsamiAllaLaurea(studenti,numeroStudenti)<<endl;
 	cout<<"Stessi voti: "<<stessiVoti(studenti[0],studenti[1])<<endl;
 	
-	delete [] studenti;
+	//delete [] studenti;
 	
 	
 	return 0;
@@ -67,7 +75,7 @@ unsigned numeroEsamiAllaLaurea(Studente studenti[],unsigned numeroStudenti)
 //mentre s2ha sostenuto l’esame di Matematica Discreta con voto pari a 25 e quellodi Inglese con voto pari a 27.
 
 
-//questo ha complessità nel caso peggiore O(n^2) non il massimo insomma
+//questo ha complessità nel caso peggiore O(n)
 bool stessiVoti(const Studente& s1,const Studente& s2)
 {
 	//matematicamente impossibile avere lo stesso numero di voti se gli esami sostenuti non sono uguali
@@ -75,62 +83,27 @@ bool stessiVoti(const Studente& s1,const Studente& s2)
 		return false;
 	
 	unsigned count = s1.getEsamiSostenuti();
-	
-	for(int i = 0;i < count;i++)
-	{
-		unsigned voto = s1.getVoto(i);
-		
-		int totale1 = 0;
-		int totale2 = 0;
-		
-		
-		for(int j = 0;j < count;j++)
-			if(s1.getVoto(j) == voto)
-				totale1++;
-	
-		for(int j = 0;j < count;j++)
-			if(s2.getVoto(j) == voto)
-				totale2++;
-			
-		if(totale1 != totale2)
-			return false;
-	}
-	
-	return true;
-		
-}
 
-string getMatricolaStudenteGiovaneEBravo(Studente studenti[],unsigned numeroStudenti)
-{
 	
-	float mediaMax = -1;
-	unsigned etaMin = -1;
-	unsigned index = -1;
-	
-	for(int i = 0;i < numeroStudenti;i++)
-	{
-		Studente s = studenti[i];
-		if(s.getEta() >= 20 && s.getEsamiSostenuti() >= 3)
-		{
-			int media = s.getMediaVoti();
-			if(media > mediaMax)
-			{
-				mediaMax = media;
-				etaMin = s.getEta();
-				index = i;
-			}
-			else if(media == mediaMax && s.getEta() < etaMin)
-			{
-				etaMin = s.getEta();
-				index = i;
-			}
-		}
+	int voti[31];
+
+    //inizializzo a 0 
+    for(int i = 0;i < 31;i++)
+	    voti[i] = 0;
+
+	for(int i = 0;i < count;i++)
+    {
+		voti[s1.getVoto(i)]++;
+		voti[s2.getVoto(i)]--;
 	}
 	
-	if(index == -1)
-		return "------";
 	
-	return studenti[index].getMatricola();
+	for(int i = 0;i < 31;i++)
+	{
+		if(voti[i] != 0)
+		    return false;
+	}
+	return true;
 	
 	
 }
