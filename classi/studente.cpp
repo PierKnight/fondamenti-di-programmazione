@@ -112,13 +112,13 @@ string getMatricolaStudenteGiovaneEBravo(Studente studenti[],unsigned numeroStud
 {
 	
 	float mediaMax = -1;
-	unsigned etaMin = -1;
-	unsigned index = -1;
+	int etaMin = -1;
+	int index = -1;
 	
 	for(int i = 0;i < numeroStudenti;i++)
 	{
 		Studente s = studenti[i];
-		if(s.getEta() >= 20 && s.getEsamiSostenuti() >= 3)
+		if(s.getEta() <= 20 && s.getEsamiSostenuti() >= 3)
 		{
 			int media = s.getMediaVoti();
 			if(media > mediaMax)
