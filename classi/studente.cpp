@@ -108,6 +108,42 @@ bool stessiVoti(const Studente& s1,const Studente& s2)
 	
 }
 
+string getMatricolaStudenteGiovaneEBravo(Studente studenti[],unsigned numeroStudenti)
+{
+	
+	float mediaMax = -1;
+	unsigned etaMin = -1;
+	unsigned index = -1;
+	
+	for(int i = 0;i < numeroStudenti;i++)
+	{
+		Studente s = studenti[i];
+		if(s.getEta() >= 20 && s.getEsamiSostenuti() >= 3)
+		{
+			int media = s.getMediaVoti();
+			if(media > mediaMax)
+			{
+				mediaMax = media;
+				etaMin = s.getEta();
+				index = i;
+			}
+			else if(media == mediaMax && s.getEta() < etaMin)
+			{
+				etaMin = s.getEta();
+				index = i;
+			}
+		}
+	}
+	
+	if(index == -1)
+		return "------";
+	
+	return studenti[index].getMatricola();
+	
+	
+}
+
+
 
 
 
