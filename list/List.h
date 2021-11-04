@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "Node.h"
+#include <assert.h>
 using namespace std;
 
 
@@ -32,6 +33,8 @@ class List
     void pushBack(const T&);
     bool popFront(T&);
     bool popBack(T&);
+    T front();
+    T back();
 
     bool find(const T&);
     bool empty(){return start == nullptr;}
@@ -155,6 +158,20 @@ bool List<T>::find(const T& v)
         node = node ->next;
     }
     return false;
+}
+
+template <class T>
+T List<T>::front()
+{
+    assert(start != nullptr);
+    return start -> value;
+}
+
+template <class T>
+T List<T>::back()
+{
+    assert(end != nullptr);
+    return end -> value;
 }
 
 
