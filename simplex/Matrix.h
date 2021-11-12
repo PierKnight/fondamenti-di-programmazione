@@ -17,7 +17,7 @@ class Matrix
     ~Matrix();
 
     void readFromInput();
-    void readFromArray(int values[]);
+    void readFromArray(double values[]);
 
     double getRows() const {return rows;}
     double getCols() const {return cols;}
@@ -101,7 +101,7 @@ void Matrix::print() const
     }
 }
 
-void Matrix::readFromArray(int values[])
+void Matrix::readFromArray(double values[])
 {
     int c = 0;
     for(int i = 0;i < rows;i++)
