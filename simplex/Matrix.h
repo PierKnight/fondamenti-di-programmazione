@@ -6,7 +6,7 @@
 
 class Matrix
 {
-    private:
+    protected:
     double** mat;
     int rows;
     int cols;
@@ -17,6 +17,7 @@ class Matrix
     ~Matrix();
 
     void readFromInput();
+    void readFromArray(int values[]);
 
     double getRows() const {return rows;}
     double getCols() const {return cols;}
@@ -35,9 +36,10 @@ class Matrix
     const double operator()(int,int) const;
 
     Matrix operator+(const Matrix&);
+    Matrix operator-(const Matrix&);
     Matrix operator*(const Matrix&);
     Matrix operator*(double);
-
+   
 
 };
 
@@ -99,6 +101,16 @@ void Matrix::print() const
     }
 }
 
+void Matrix::readFromArray(int values[])
+{
+    int c = 0;
+    for(int i = 0;i < rows;i++)
+    {
+       for(int j = 0;j < cols;j++)
+          (*this)(i,j) = values[c++];
+    }
+}
+
 Matrix Matrix::operator=(const Matrix& other)
 {
     for(int i = 0;i < rows;i++)
@@ -109,11 +121,13 @@ Matrix Matrix::operator=(const Matrix& other)
 
 double& Matrix::operator()(int x,int y)
 {
+   assert(x < rows && y < cols);
    return mat[x][y];
 }
 
 const double Matrix::operator()(int x,int y) const
 {
+   assert(x < rows && y < cols);
    return mat[x][y];
 }
 
@@ -128,6 +142,19 @@ Matrix Matrix::operator+(const Matrix& m)
           newMatrix(i,j) += (*this)(i,j);
     return newMatrix;
 }
+
+Matrix Matrix::operator-(const Matrix& m)
+{
+    assert(m.cols == cols && m.rows == rows);
+
+    Matrix newMatrix(*this);
+
+    for(int i = 0;i < rows;i++)
+       for(int j = 0;j < cols;j++)
+          newMatrix(i,j) -= m(i,j);
+    return newMatrix;
+}
+
 
 Matrix Matrix::operator*(const Matrix& m)
 {
