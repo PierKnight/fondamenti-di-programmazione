@@ -19,7 +19,9 @@ class StandardSimplex
     StandardSimplex(Matrix,Matrix,Matrix);
     StandardSimplex(Matrix,Matrix,Matrix,bool);
 
-    bool getOptimalValue(Matrix& currSol);
+    //TO-DO prima fase del simplesso
+
+    bool getOptimalValue(Matrix& currSol,double&);
 
 };
 
@@ -37,13 +39,12 @@ StandardSimplex::StandardSimplex(Matrix m1,Matrix m2,Matrix m3,bool d):resource(
     }
 }
 
-//TO-DO prima fase del simplesso
 
 //QUESTA E' la seconda fase dell'algoritmo del simplesso!, l'argomento DEVE essere una soluzione ammissibile,
 //poi ci pensa lui a controllare se effettivamente è anche di base.
 
 //si lo so, potrebbe essere reso MOLTO più efficente, al momento faccio un sacco di copie inutili
-bool StandardSimplex::getOptimalValue(Matrix& currX)
+bool StandardSimplex::getOptimalValue(Matrix& currX,double& objective)
 {
     int m = matrix.getRows();
     int n = matrix.getCols();
@@ -178,6 +179,8 @@ bool StandardSimplex::getOptimalValue(Matrix& currX)
         }
     }
 
+    objective += costiRidottiFuoriBase(0,j_value) * step;
+
     if(debug)
     {
         std::cout<<"---------------Soluzione di base ammissibile corrente---------------\n";
@@ -193,7 +196,7 @@ bool StandardSimplex::getOptimalValue(Matrix& currX)
          
     }
 
-    return getOptimalValue(newSolution);
+    return getOptimalValue(newSolution,objective);
 
 }
 

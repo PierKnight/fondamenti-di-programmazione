@@ -31,9 +31,11 @@ int main()
 
     StandardSimplex problema(risorse,costi,matrix,true);
 
-    problema.getOptimalValue(soluzioneIniziale);
-   
+    double ob = -1;
 
+    problema.getOptimalValue(soluzioneIniziale,ob);
+   
+    cout<<"Valore Obiettivo ottimo: "<<ob<<endl;
     
     return 0;
 
