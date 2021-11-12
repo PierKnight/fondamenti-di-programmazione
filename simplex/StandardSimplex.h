@@ -92,6 +92,7 @@ bool StandardSimplex::getOptimalValue(Matrix& currX,double& objective)
         }
         else
         {
+            
             std::cout<<"La soluzione inserita non è di base!(valori diversi da 0 >= m!)\n";
             return false;
         }
