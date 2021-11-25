@@ -27,39 +27,41 @@ void visitaPerLivelli(const AlberoB<int>& a) {
         return;
     
     std::queue<AlberoBInt> q;
+    std::queue<int> levels;
     q.push(a);
-    
-    int messi = 1;
+    levels.push(1);
+
+    int currentLevel = 1;
 
     while(!q.empty()) {
         AlberoBInt temp = q.front(); 
         q.pop();
+
+        int level = levels.front();
+        levels.pop();
+
+        //STAMPA A LIVELLI L'ALBERO
+        if(level != currentLevel)
+            std::cout<<endl;
     
-
-       messi--;
-
-       
-
-        
         std::cout << temp.radice() << ' ';
-        if(messi == 0)
-          cout<<endl;
-        
 
+        
         if (!temp.figlio(SIN).nullo())
         {
             q.push(temp.figlio(SIN));
-            messi++;
+            levels.push(level + 1);
         }
         if (!temp.figlio(DES).nullo())
         {
             q.push(temp.figlio(DES));
-            messi++;
+            levels.push(level + 1);
         }
+
+        currentLevel = level;
 
 
     }   
-    //STAMPARE A SCALINI L'ALBERO
 
     
 }
