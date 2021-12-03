@@ -71,7 +71,10 @@ public:
     }
 
     
+    // numero di nodi
     unsigned n() const { return vn; }
+
+    //numero di archi
     unsigned m() const { return vm; }
     // true se l'arco (i,j) esiste, altrimenti false
     bool operator()(unsigned i, unsigned j) const {
