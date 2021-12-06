@@ -250,6 +250,35 @@ bool inUnCiclo(const Grafo& g, int nodo)
 
 }
 
+/*
+Sapendo chepesi[i] rappresenta il peso del nodoinel grafo g,
+la funzione deve restituire true se e solo se vale per g la seguente proprieta:
+per ogni nodo i, il peso di i moltiplicato per il numero di nodi adiacenti a i
+ deve essere maggiore o uguale alla somma dei pesi dei nodi a lui adiacenti.
+*/
+
+bool proprieta2(const Grafo& g, vector<int>pesi)
+{
+    for(int i = 0;i < g.n();i++)
+    {
+        int nodiAdiacenti = 0;
+        int totalePesiAdiacenti = 0;
+
+        for(int j = 0;j < g.n();j++)
+        {
+            if(g(i,j) && i != j)
+            {
+                ++nodiAdiacenti;
+                totalePesiAdiacenti += pesi[j];
+            }
+        }
+        if(pesi[i] * nodiAdiacenti < totalePesiAdiacenti)
+           return false;
+    }
+    return true;
+
+}
+
 int main()
 {
     Grafo grafo(4);
