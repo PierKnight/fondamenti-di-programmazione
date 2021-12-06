@@ -188,13 +188,87 @@ vector<int> dijkstra(const GrafoPesato& g)
 
 }
 
+
+//ritorna true se e solo se il grafo è debolmente connesso
+bool connesso(const Grafo& grafo)
+{
+    queue<int> search;
+
+    vector<bool> trovati(grafo.n(),false);
+    trovati[0] = true;
+    int numTrovati = 1;
+    search.push(0);
+    
+    while(!search.empty())
+    {
+        int node = search.front();
+        search.pop();
+        
+        for(int i = 0;i < grafo.n();i++)
+        {
+            if(grafo(node,i) && i != node && !trovati[i])
+            {
+                numTrovati++;
+                trovati[i] = true;
+                search.push(i);
+            }
+        }
+    }
+
+    return numTrovati == grafo.n();
+}
+
+
+//restituisce true il nodo dato appartiene ad un ciclo se presente nel grafo.
+bool inUnCiclo(const Grafo& g, int nodo)
+{
+    queue<int> search;
+
+    vector<bool> trovati(g.n(),false);
+    search.push(nodo);
+
+    while(!search.empty())
+    {
+        int sNode = search.front();
+        search.pop();
+
+        for(int i = 0;i < g.n();i++)
+        {
+            if(g(sNode,i) && i != sNode && !trovati[i])
+            {
+                if(i == nodo)
+                   return true;
+                trovati[i] = true;
+                search.push(i);
+            }
+        }
+
+    }
+    return false;
+
+
+
+}
+
 int main()
 {
-    GrafoPesato grafo(4);
+    Grafo grafo(4);
 
-    grafo(0,1,true,2);
-    grafo(1,2,true,2);
-    grafo(2,3,true,2);
+    grafo(0,1,true);
+    grafo(1,2,true);
+    grafo(2,0,true);
+    grafo(2,3,true);
+
+
+    bool trovati[grafo.n()];
+    int e = 0;
+
+    if(connesso(grafo))
+        cout<<"e' connesso!!!!"<<endl;
+
+    int nodoCiclo = 0;
+    if(inUnCiclo(grafo,nodoCiclo))
+       cout<<"Il nodo "<<nodoCiclo<<" appartiene ad un ciclo del grafo!"<<endl;
 
 
 
@@ -209,8 +283,6 @@ int main()
 
         */
 
-
-    printCammino(dijkstra(grafo),3);
     return 0;
 }
 
