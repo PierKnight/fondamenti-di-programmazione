@@ -1,90 +1,86 @@
-#include <iostream>
-#include <string>
+
 #include <vector>
+#include <iostream>
 using namespace std;
 
-struct SolutionT
-{
-    
 
-    private:
-    string solutioneCorrente;
-    int parentesiAperte;
+struct Soluzione{
+    
+    vector<string> benParentesizzate;
+    string current;
+
     int n;
 
-    public: 
-    vector<string> solutioni;
-    SolutionT(int n_):n(n_),parentesiAperte(0),solutioneCorrente(""){}
-
-
-    private:
-
-    void add(int x,SolutionT& sol)
-    {
-        if(x == 0)
-           sol.parentesiAperte++;
-        
-        char stringa = x == 0 ? '(' : ')';
-        sol.solutioneCorrente += stringa;
-        
-    }
-
-    void remove(SolutionT& sol)
-    {
-        if(sol.solutioneCorrente.back() == '(')
-            sol.parentesiAperte--;
-        
-        sol.solutioneCorrente.pop_back();
-    }
-
-    bool canAdd(int x,SolutionT& sol)
-    {
-        if(x == 0)
-           return sol.parentesiAperte < sol.n;
-        else 
-           return sol.parentesiAperte > (sol.solutioneCorrente.size() - sol.parentesiAperte);
-    }
-
-    bool isComplete(SolutionT& sol)
-    {
-        return sol.solutioneCorrente.size() == sol.n * 2;
-    }
-
-
-    void solve(SolutionT& sol)
-    {
-        for(int x = 0;x < 2;x++)
-        {
-            if(canAdd(x,sol))
-            {
-                add(x,sol);
-                if(isComplete(sol))
-                    sol.solutioni.push_back(sol.solutioneCorrente);
-                solve(sol);               
-                remove(sol);
-            }
-        }
-    }
-
-
-
-
-    
+    Soluzione(int n_) : n(n_), current(""){}
 
 };
 
-int main()
-{
+void solve(Soluzione& soluzione);
+string get(int x);
+bool canAdd(string parentesi, const Soluzione& soluzione);
+void add(string parentesi, Soluzione& soluzione);
+bool isComplete(const Soluzione& soluzione);
+void remove(Soluzione& soluzione);
 
-    SolutionT sol(3);
+int main(){
+    cout << "Inserisci numero di parentesi: ";
+    int n; cin >> n;
 
+    Soluzione s(n);
+    solve(s);
 
-    for(int i = 0;i < sol.solutioni.size();i++)
-    {
-        cout<<sol.solutioni[i]<<endl;
+    for(string benParentesizzata: s.benParentesizzate)
+        cout << benParentesizzata << endl;
+}
+
+void solve(Soluzione& soluzione){
+    int x = 0;
+    while(x < 2){
+        if(canAdd(get(x), soluzione)){
+            add(get(x), soluzione);
+            
+            if(isComplete(soluzione))
+                soluzione.benParentesizzate.push_back(soluzione.current);
+            
+            solve(soluzione);
+
+            remove(soluzione);
+            x++;
+        }
+        else
+            x++;
     }
 
-    cout<<"EEEEE"<<sol.solutioni.size();
-
-    return 0;
 }
+
+string get(int x){
+    if(x == 0) 
+        return "(";
+
+    return ")";
+}
+
+bool canAdd(string parentesi, const Soluzione& soluzione){
+    int count_aperte = 0;
+    for(int i = 0; i < soluzione.current.size(); i++)
+        if(soluzione.current[i] == '(')
+            count_aperte ++;
+        
+    if(parentesi == "(")
+        return count_aperte < soluzione.n;
+    else //parentesi == ")"
+        return count_aperte > (soluzione.current.size() - count_aperte);
+}
+
+void add(string parentesi, Soluzione& soluzione){
+    soluzione.current += parentesi;
+}
+
+bool isComplete(const Soluzione& soluzione){
+    return soluzione.current.size() == 2 * soluzione.n;
+}
+
+void remove(Soluzione& soluzione){
+    soluzione.current.pop_back();
+}
+
