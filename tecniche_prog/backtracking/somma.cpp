@@ -24,7 +24,7 @@ class SolutionT
         solution.sol.pop_back();
     }
 
-    bool canAdd(int x,SolutionT& solution)
+    bool canAdd(int x,const SolutionT& solution)
     {
         for(int i = 0;i < solution.sol.size();i++)
               if(solution.sol[i] == x)
@@ -32,27 +32,25 @@ class SolutionT
         return x <= solution.sommaRestante;
     }
 
-    bool isComplete(SolutionT& solution)
+    bool isComplete(const SolutionT& solution)
     {
         return solution.sommaRestante == 0;
     }
+
+    //la i serve per evitare di controllare combinazioni uguali
     public:
-    bool solve(SolutionT& solution)
+    bool solve(SolutionT& solution,int i)
     {
-        int x = 0;
-        while(x < solution.numeri.size())
+        for(int x = i;x < solution.numeri.size();x++)
         {
             if(canAdd(x,solution))
             {
                add(x,solution);
 
                if(isComplete(solution)){return true;}
-               if(solve(solution)){return true;}
+               if(solve(solution,x + 1)){return true;}
                remove(solution);
-               x++;
             }
-            else
-              x++;
         }
         return false;
         
@@ -63,10 +61,22 @@ class SolutionT
 
 int main()
 {
-    vector<int> numeri = {1,3,5,7,11,5,8,9};
-    SolutionT test(13,numeri);
+    vector<int> numeri;
+    
 
-    if(test.solve(test))
+
+    cout<<"Inserire Numeri: ";
+    int value;
+    while(cin>>value && value != -1)
+          numeri.push_back(value);
+    cout<<"Inserire Target: ";
+    cin>>value;
+    
+
+
+    SolutionT test(value,numeri);
+
+    if(test.solve(test,0))
     {
         cout<<"YAY ho trovato una combinazione!: "<<endl;
 
