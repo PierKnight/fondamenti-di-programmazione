@@ -84,14 +84,15 @@ bool isComplete(const SoluzioneCavallo& sol)
     return sol.totalVisited >= 64;
 }
 
-bool solve(SoluzioneCavallo& sol)
+bool solve(SoluzioneCavallo& sol,bool right)
 {
     int row;
     int col;
     //le otto possibili mosse del cavallo
     for(int index = 0;index < 8;index++)
     {
-        if(getNearCheckByIndex(sol,index,row,col) && sol.board[row][col] == -1)
+        int test= right ? index : 7 - index;
+        if(getNearCheckByIndex(sol,test,row,col) && sol.board[row][col] == -1)
         {
             
             sol.totalVisited++;
@@ -105,7 +106,7 @@ bool solve(SoluzioneCavallo& sol)
             sol.currCol = col;
             
             if(isComplete(sol)){return true;}
-            if(solve(sol)){return true;}
+            if(solve(sol,right)){return true;}
 
             sol.totalVisited--;
             sol.board[row][col] = -1;
@@ -119,8 +120,8 @@ bool solve(SoluzioneCavallo& sol)
 
 int main()
 {
-    SoluzioneCavallo cav(0,4);
-    solve(cav);
+    SoluzioneCavallo cav(3,4);
+    solve(cav,false);
 
      
    
