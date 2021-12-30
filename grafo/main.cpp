@@ -111,28 +111,6 @@ bool stessoNumeroNodiStessoGrado(const Grafo& g1,const Grafo& g2)
     return true;
 }
 
-int estraiMinimo(list<int>& daVisitare,const vector<int>& costiCammini)
-{
-    list<int>::iterator minNodo = daVisitare.begin();
-    int minCosto = costiCammini[*minNodo];
-
-    for(auto pos = daVisitare.begin()++; pos != daVisitare.end();pos++)
-    {
-        if(costiCammini[*pos] < minCosto)
-        {
-            minNodo = pos;
-            minCosto = costiCammini[*pos];
-        }
-   
-    }
-    int n = *minNodo;
-    daVisitare.erase(minNodo);
-    return n;
-
-    
-}
-
-
 void printCammino(const vector<int>& map,int target)
 {  
 
@@ -140,7 +118,7 @@ void printCammino(const vector<int>& map,int target)
 
     while(target != 0)
     {
-        path = " --> " + to_string(target);
+        path = " --> " + to_string(target) + path;
         target = map[target];
     }
 
@@ -149,43 +127,66 @@ void printCammino(const vector<int>& map,int target)
 
 }
 
-vector<int> dijkstra(const GrafoPesato& g)
+//ritorna il nodo che ha il percoso ad esso meno costoso
+int estraiMinimo(const GrafoPesato& g,vector<bool>& visitato,int& nNodiVisitati,const vector<int>& W)
 {
-    vector<int> costoCammino(g.n(),numeric_limits<int>::max());
-    costoCammino[0] = 0;
+    int costoMinimo = numeric_limits<int>::max();
+    int nodoMinimo = -1;
 
-    vector<int> percorsi(g.n(),0);   
-    
-    list<int> visitati;
-    list<int> daVisitare;
     for(int i = 0;i < g.n();i++)
-      daVisitare.push_back(i);
-    
-
-    while(!daVisitare.empty())
     {
-        int minNodo = estraiMinimo(daVisitare,costoCammino);
-        visitati.push_back(minNodo);
+        if(!visitato[i] && W[i] < costoMinimo)
+        {
+            nodoMinimo = i;
+            costoMinimo = W[i];
+        }
+    }
+    if(nodoMinimo != -1)
+    {
+    visitato[nodoMinimo] = true;
+    nNodiVisitati++;
+    }
+    
+    return nodoMinimo;
 
+}
+
+//ritorna l'array dei percorsi minimi
+//start è il nodo di partenza
+//il target serve per specificare se ci interessa un cammino al target e fermarci li oppure l'intero albero dei cammini
+vector<int> dijkstra(const GrafoPesato& g,int start,int target)
+{
+    int nNodiVisitati = 0;
+    vector<bool> visitato(g.n(),false);
+    vector<int> W(g.n(),numeric_limits<int>::max());
+    W[start] = 0;
+
+    vector<int> percorsi(g.n(),0);
+
+    while(nNodiVisitati < g.n())
+    {
+        int minNodo = estraiMinimo(g,visitato,nNodiVisitati,W);
+
+
+        if(minNodo == -1 || minNodo == target)
+        {
+            return percorsi;
+        }
 
         for(int i = 0;i < g.n();i++)
         {
-           if(g(minNodo,i) && minNodo != i)
-           {
-               if(costoCammino[minNodo] + g.w(minNodo,i) < costoCammino[i])
-               {
-                   costoCammino[i] = costoCammino[minNodo] + g.w(minNodo,i);
+            if(i != minNodo && g(minNodo,i))
+            {
+                if(W[minNodo] + g.w(minNodo,i) < W[i])
+                {
+                   W[i] = W[minNodo] + g.w(minNodo,i);
                    percorsi[i] = minNodo;
-               }
-
-           }
+                }
+            }
         }
-
-        
     }
+
     return percorsi;
-
-
 }
 
 
@@ -279,6 +280,18 @@ bool proprieta2(const Grafo& g, vector<int>pesi)
 
 }
 
+vector<int> split(const std::string& s,char c)
+{
+    vector<int> vec;
+
+    for(int i = 0;i < s.size();i++)
+    {
+        if(s[i] == c)
+           vec.push_back(i);
+    }
+    return vec;
+}
+
 int main()
 {
     Grafo grafo(4);
@@ -300,17 +313,45 @@ int main()
        cout<<"Il nodo "<<nodoCiclo<<" appartiene ad un ciclo del grafo!"<<endl;
 
 
+    
 
-    /*stampaGrafo(grafo);
+    std::string input;
+    int n;
+    cout<<"Grandezza Grafo: ";
+    cin>>n;
+    cout<<endl;
+
+    GrafoPesato test(n);
 
 
-    cout<<"Grado Massimo e' il nodo: "<<getNodoConGradoMassimo(grafo)<<endl;
-    if(almenoUnNodoAdiacenteATutti(grafo))
-        cout<<"Esiste un nodo adiacente a tutti!"<<endl;
-    else
-        cout<<"Non Esiste un nodo adiacente a tutti!"<<endl;
+    while(getline(cin,input) && input != "-1")
+    {
+        cout<<input<<endl;
+        if(input.size() <= 4)
+        {
+            cout<<"L'input non puo' essere cosi corto."<<endl;
+            continue;
+        }
+        vector<int> spl = split(input,',');
+        if(spl.size() < 2)
+        {
+            cout<<"L'input non e' formato correttamente."<<endl;
+            continue;
+        }
+          
+        int from = stoi(input.substr(0,spl[0]));
+        int to = stoi(input.substr(spl[0] + 1,spl[1]));
+        int w = stoi(input.substr(spl[1] + 1,spl[2]));
 
-        */
+        test(from,to,true,w);
+
+        cout<<"Inserito Arco ("<<from<<","<<to<<") con peso "<<w<<endl;
+    }
+
+
+    printCammino(dijkstra(test,0,3),3);
+
+
 
     return 0;
 }
