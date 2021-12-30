@@ -142,6 +142,9 @@ void ford(const GrafoPesato& g)
 int main()
 {
     GrafoPesato grafo(6);
+
+    
+    //esercizio 1 test
     grafo(0,1,true,12);
     grafo(0,2,true,9);
     grafo(1,3,true,15);
@@ -152,6 +155,19 @@ int main()
     grafo(4,1,true,5);
     grafo(4,5,true,8);
     grafo(4,3,true,8);
+    
+
+    //esercizio 2 test
+    grafo(0,1,true,7);
+    grafo(0,2,true,23);
+    grafo(1,3,true,10);
+    grafo(2,1,true,6);
+    grafo(2,3,true,9);
+    grafo(2,4,true,11);
+    grafo(3,4,true,5);
+    grafo(3,5,true,20);
+    grafo(4,1,true,4);
+    grafo(4,5,true,8);
     
     
     
