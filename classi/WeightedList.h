@@ -5,6 +5,7 @@
 #include <vector>
 #include <ctime>
 #include <random>
+#include <assert.h>
 
 
 template <class T>
@@ -26,6 +27,11 @@ class WeightedList
 
     void addElement(T l,int weight)
     {
+        if(weight < 0)
+        {
+            std::cout<<"Impossibile inserire un elemento con peso negativo!\n";
+            return;
+        }
         weights.push_back(weight);
         elements.push_back(l);
         totalWeight += weight;
@@ -41,6 +47,7 @@ class WeightedList
     //get random element, gives an exception if the list is empty
     T get()
     {
+        assert(!weights.empty());
         int r = std::rand() % (totalWeight + 1);
         
         int sum = 0;
