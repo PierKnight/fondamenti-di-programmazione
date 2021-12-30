@@ -59,87 +59,32 @@ int divCoinsGolosa(const vector<int>& vec)
 
 int divCoinsDinamica(const vector<int>& vec)
 {
-    if(vec.empty())
-        return 0;
-    if(vec.size() == 1)
-        return vec[0];
+    int totaleValore = 0;
 
-    //la matrice che memorizza il valore data alla persona numero 1
-    vector<vector<int>> matrix;
+    for(int i = 0;i < vec.size();i++)
+        totaleValore += vec[i];
+    
+    vector<bool> sommaOttenibile(totaleValore + 1,false);
+    sommaOttenibile[0] = true;
+    
 
-    int n = vec.size();
 
-    //somma dei valori totali delle monete
-    int valoreTotaleMonete = vec[0];
+    for(int i = 0;i < vec.size();i++)
+    {
+        for(int j = 0;j < totaleValore;j++)
+          if(sommaOttenibile[j])
+          {
+              sommaOttenibile[vec[i] + j] = true;
+          }
+    }
+
+    for(int i = totaleValore / 2;i > 0;i--)
+    {
+        if(sommaOttenibile[i])
+           return abs(totaleValore - i * 2);
+    }
 
     
-    //la matrice segue cosi: prima riga, se diamo una monet alla persona, seconda riga diamo due monete etc...
-    //ovviamente il valore totale di monete di una singola moneta è il valore stesso di quest'ultima
-    matrix.push_back(vec);
-
-    for(int i = 1;i < n;i++)
-    {
-        valoreTotaleMonete += vec[i];
-
-        vector<int> row(n,0);
-        matrix.push_back(row);
-    }
-
-    //cout<<"Totale Valore: "<<valoreTotaleMonete<<endl;
-
-
-
-    //il caso peggiore
-    int miglioreDifferenza = numeric_limits<int>::max();
-
-    //proviamo i vari prestiti che possiamo fare mano a mano
-    for(int i = 0;i < n - 1;i++)
-    {
-
-        for(int j = 0;j < n;j++)
-        {
-            
-            for(int k = 0;k < n - i;k++)
-            {
-               int valoreTotaleP = i == 0 ? matrix[i][j] : matrix[i - 1][j] + vec[(j + i + k) % n];
-
-               //con questo aggiorno la mia matrice
-               if(i > 0 && k == 0)
-                  matrix[i][j] = valoreTotaleP;           
-               int differenzaDatoValore = abs(valoreTotaleMonete - valoreTotaleP * 2);         
-               //se troviamo una combinazione che dia 0 di differenza,allora è inutile andare avanti non troverò di meglio
-               if(differenzaDatoValore == 0)
-               {     
-                  return 0;
-               }
-            
-
-               if(differenzaDatoValore < miglioreDifferenza)
-               {
-                   miglioreDifferenza = differenzaDatoValore;   
-               }        
-            }
-
-
-            
-        }
-
-
-    }
-   
-   /*
-   cout<<endl;
-   for(int i = 0;i < n - 1;i++)
-   {
-       for(int j = 0;j < n;j++)
-       {
-           cout<<matrix[i][j]<<" ";
-       }
-       cout<<endl;
-   }
-   */
-
-    return miglioreDifferenza;
 
 }
 
